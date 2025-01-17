@@ -17,8 +17,8 @@ public interface ViaticosRepository extends JpaRepository<Viaticos, String> {
     @Query("""
         SELECT COUNT(v) 
         FROM Viaticos v 
-        WHERE FUNCTION('MONTH', v.fechaCreacion) = FUNCTION('MONTH', CURRENT_DATE) 
-        AND FUNCTION('YEAR', v.fechaCreacion) = FUNCTION('YEAR', CURRENT_DATE)
+        WHERE MONTH(v.fechaRegistro) = MONTH(CURRENT_DATE()) 
+        AND YEAR(v.fechaRegistro) = YEAR(CURRENT_DATE())
         """)
     long countViaticosDelMesActual();
 

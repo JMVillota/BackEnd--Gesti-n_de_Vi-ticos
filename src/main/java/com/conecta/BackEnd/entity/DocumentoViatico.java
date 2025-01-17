@@ -1,42 +1,35 @@
 package com.conecta.BackEnd.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDateTime;
 
-@Data
 @Entity
-@Table(name = "documentos_viatico", indexes = {
-    @Index(name = "idx_documentos_viatico_id", columnList = "viatico_id")
-})
+@Table(name = "documentos_viatico")
+@Data
 public class DocumentoViatico {
     
     @Id
-    @Column(nullable = false, length = 10)
     private String id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "viatico_id", nullable = false)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Viaticos viatico;
+    @Column(name = "viatico_id")
+    private String viaticoId;
     
-    @Column(name = "nombre_zip", nullable = false, length = 255)
+    @Column(name = "nombre_zip")
     private String nombreZip;
     
-    @Column(name = "ruta_archivo", nullable = false, length = 500)
+    @Column(name = "ruta_archivo")
     private String rutaArchivo;
     
-    @Column(name = "numero_archivos_pdf", nullable = false)
+    @Column(name = "numero_archivos_pdf")
     private Integer numeroArchivosPdf;
     
-    @Column(name = "fecha_carga", nullable = false, updatable = false)
+    @Column(name = "fecha_carga")
     private LocalDateTime fechaCarga;
-    
-    @PrePersist
-    protected void onCreate() {
-        fechaCarga = LocalDateTime.now();
-    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "viatico_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private Viaticos viatico;
 }

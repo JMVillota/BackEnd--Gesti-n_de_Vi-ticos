@@ -1,5 +1,6 @@
 package com.conecta.BackEnd.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,12 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+    @Value("${app.security.user.username}")
+    private String username;
+
+    @Value("${app.security.user.password}")
+    private String password;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -26,16 +33,15 @@ public class SecurityConfig {
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
             )
-            .httpBasic(Customizer.withDefaults()); // Utiliza autenticación básica HTTP
+            .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Define el usuario con codificación de contraseñas actual
         UserDetails user = User.builder()
-            .username("user")
-            .password("{noop}password") // No encriptada para simplicidad; reemplazar con codificación en producción
+            .username(username)
+            .password("{noop}" + password)
             .roles("USER")
             .build();
         return new InMemoryUserDetailsManager(user);

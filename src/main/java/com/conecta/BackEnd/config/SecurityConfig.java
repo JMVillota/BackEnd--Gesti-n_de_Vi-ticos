@@ -21,7 +21,7 @@ public class SecurityConfig {
 
     @Value("${app.security.user.username}")
     private String username;
-
+    
     @Value("${app.security.user.password}")
     private String password;
 

@@ -19,10 +19,10 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-    @Value("${app.security.user.username}")
+    @Value("${spring.security.user.name}")
     private String username;
     
-    @Value("${app.security.user.password}")
+    @Value("${spring.security.user.password}")
     private String password;
 
     @Bean
